@@ -353,10 +353,12 @@ input[type="range"]::-webkit-slider-thumb {
     justify-content: space-between;
 }
 
+/* 导航栏左侧布局 */
 .nav-left {
-    display: inline-flex; /* 保持平布局 */
-    align-items: center; /* 垂直居中容 */
-    height: 60px; /* 确保导航条区域高度一致 */
+    display: inline-flex;
+    align-items: center;
+    height: 60px;
+    gap: 32px;  /* logo 和按钮之间的间距 */
 }
 
 .nav-logo {
@@ -618,8 +620,8 @@ input[type="range"]::-webkit-slider-thumb {
 /* 图片列表样式 */
 .image-lists {
     margin-top: 24px;
-    display: flex;  /* 使用flex布局实现水平排列 */
-    gap: 8px;  /* 两个卡片之间的间距 */
+    display: flex;  /* 使用flex布局实水平排列 */
+    gap: 8px;  /* 两个卡片之���的间距 */
     max-width: 1080px;
     min-width: 400px;
     margin-left: auto;
@@ -810,5 +812,72 @@ input[type="range"]::-webkit-slider-thumb {
     min-width: 400px;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* 悬浮按钮样式 */
+.nav-toggle {
+    display: none;  /* 默认���藏 */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 按钮激活状态 */
+.nav-toggle.active {
+    background: rgba(104, 39, 255, 0.1);
+    color: #6827FF;
+    transform: rotate(90deg);
+}
+
+/* 响应式布局 */
+@media (max-width: 500px) {
+    .nav-toggle {
+        display: block;  /* 小屏幕时显示按钮 */
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .sidebar.show {
+        display: block;
+        position: fixed;
+        top: 72px;  /* 位于导航栏下方 */
+        left: 12px;  /* 左对齐 */
+        right: 12px;  /* 右对齐 */
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        padding: 12px;
+    }
+
+    .side-nav {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .content-background {
+        left: 12px !important;
+        right: 12px !important;
+    }
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] .nav-toggle.active {
+    background: rgba(104, 39, 255, 0.2);
+}
+
+[data-theme="dark"] .sidebar.show {
+    background: #242424;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 

@@ -74,8 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
         imageListsContainer.style.display = 'flex';
         batchCompressBtn.style.display = 'block';
         
-        // 隐藏压缩后列表
+        // 隐藏压缩后列表和压缩控制区域
         document.getElementById('compressedListContainer').style.display = 'none';
+        document.getElementById('compressControls').style.display = 'none';  // 确保隐藏压缩控制区域
 
         // 显示原始图片列表
         displayOriginalList();
@@ -164,6 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('compressedListContainer').style.display = 'block';
         // 显示压缩控制区域
         document.getElementById('compressControls').style.display = 'block';
+        // 隐藏批量压缩按钮
+        document.getElementById('batchCompressBtn').style.display = 'none';
         // 执行压缩
         debouncedBatchCompress();
     });
@@ -297,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
             zip.file(`compressed_${originalFiles[index].name}`, file);
         });
 
-        // ��载zip文件
+        // 载zip文件
         zip.generateAsync({type: 'blob'}).then(content => {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(content);
@@ -372,9 +375,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 初始化显示上次访问的页面
+    // 初始化显示上次访��的页面
     Object.values(contentSections).forEach(section => section.style.display = 'none');
     if (contentSections[lastVisitedPage]) {
         contentSections[lastVisitedPage].style.display = 'block';
     }
+
+    // 添加在 DOMContentLoaded 事件监听器内
+    const navToggle = document.getElementById('navToggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('show');
+        navToggle.classList.toggle('active');
+    });
+
+    // 点击内容区域时关闭导航
+    document.querySelector('.content-background').addEventListener('click', () => {
+        if (window.innerWidth <= 500) {
+            sidebar.classList.remove('show');
+            navToggle.classList.remove('active');
+        }
+    });
+
+    // 点击导航项后自动关闭导航（在小屏幕时）
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 500) {
+                sidebar.classList.remove('show');
+                navToggle.classList.remove('active');
+            }
+        });
+    });
 }); 

@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatGGS</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-left">
                 <img class="nav-logo" src="./assets/icons/logo.png"/>
-                <!-- <span class="nav-title">ChatGGS</span> -->
+                <button class="nav-toggle" id="navToggle">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>
+                    </svg>
+                </button>
             </div>
             <button class="theme-toggle" id="themeToggle">
                 <!-- <svg class="theme-icon" viewBox="0 0 24 24"> -->
