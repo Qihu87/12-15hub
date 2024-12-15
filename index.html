@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGGS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <img class="nav-logo" src="./assets/icons/logo.png"/>
+                <!-- <span class="nav-title">ChatGGS</span> -->
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <!-- <svg class="theme-icon" viewBox="0 0 24 24"> -->
+                    <path class="sun" d="M12 17.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Zm0 1.5a7 7 0 1 1 0-14 7 7 0 0 1 0 14Zm0-16a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1Zm0 15a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1ZM4 12a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1Zm15 0a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1Z" fill="currentColor"/>
+                    <path class="moon" d="M12 3a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1Zm5.66 2.34a1 1 0 0 1 0 1.42l-.71.7a1 1 0 1 1-1.42-1.4l.71-.72a1 1 0 0 1 1.42 0ZM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-8 4a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1Zm15 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1ZM6.34 6.34a1 1 0 0 1 0 1.42l-.71.7a1 1 0 0 1-1.42-1.4l.71-.72a1 1 0 0 1 1.42 0Zm12.72 12.72a1 1 0 0 1 0 1.42l-.71.7a1 1 0 1 1-1.42-1.4l.71-.72a1 1 0 0 1 1.42 0ZM12 19a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1Z" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+    <div class="layout">
+        <aside class="sidebar">
+            <nav class="side-nav">
+                <ul class="nav-list">
+                    <li class="nav-item active" data-target="home">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.007 2.373L22.545 11.116C22.6639 11.2249 22.7471 11.3671 22.7837 11.5241C22.8204 11.6811 22.8088 11.8454 22.7504 11.9957C22.692 12.146 22.5896 12.2751 22.4566 12.3661C22.3236 12.4572 22.1662 12.5059 22.005 12.506L21.061 12.505V19.505C21.061 19.7676 21.0092 20.0277 20.9087 20.2704C20.8082 20.513 20.6609 20.7335 20.4752 20.9192C20.2895 21.1049 20.069 21.2522 19.8263 21.3528C19.5837 21.4533 19.3236 21.505 19.061 21.505H5.06097C4.79833 21.505 4.53825 21.4533 4.2956 21.3528C4.05295 21.2522 3.83247 21.1049 3.64676 20.9192C3.46104 20.7335 3.31372 20.513 3.21321 20.2704C3.1127 20.0277 3.06097 19.7676 3.06097 19.505V12.505H2.11797C1.95699 12.5047 1.79984 12.4559 1.66706 12.3649C1.53427 12.2739 1.43203 12.1449 1.3737 11.9949C1.31537 11.8448 1.30366 11.6807 1.34011 11.5239C1.37655 11.3671 1.45945 11.2249 1.57797 11.116L11.115 2.373C11.3732 2.13632 11.7107 2.00503 12.061 2.00503C12.4112 2.00503 12.7488 2.13632 13.007 2.373ZM7.32297 13.86C7.1355 14.0475 7.03018 14.3018 7.03018 14.567C7.03018 14.8322 7.1355 15.0865 7.32297 15.274C8.55358 16.5046 10.2226 17.1959 11.963 17.1959C13.7033 17.1959 15.3724 16.5046 16.603 15.274C16.7851 15.0854 16.8859 14.8328 16.8836 14.5706C16.8814 14.3084 16.7762 14.0576 16.5908 13.8722C16.4054 13.6868 16.1546 13.5816 15.8924 13.5793C15.6302 13.577 15.3776 13.6778 15.189 13.86C14.3335 14.7153 13.1732 15.1959 11.9635 15.1959C10.7537 15.1959 9.59348 14.7153 8.73797 13.86C8.6451 13.767 8.53481 13.6933 8.41341 13.6429C8.29201 13.5926 8.16189 13.5667 8.03047 13.5667C7.89905 13.5667 7.76893 13.5926 7.64753 13.6429C7.52613 13.6933 7.41584 13.767 7.32297 13.86Z" fill="currentColor"/>
+                        </svg>
+                        <span>首页</span>
+                    </li>
+                    <li class="nav-item" data-target="compressor">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M4 16v4h16v-4M12 3L4 9h16l-8-6z" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>图片压缩</span>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="content-background">
+                <div class="home-content">
+                    <div class="container">
+                        <h1>欢迎来到首页</h1>
+                        <!-- 首页的内容 -->
+                    </div>
+                </div>
+                <div class="compressor-content" style="display: none;">
+                    <div class="container">
+                        <div class="compressor-header">
+                            <div class="nihao">
+                                <!-- <svg class="compressor-icon" viewBox="0 0 24 24">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zm0 7l10 5-10 5-10-5 10-5z" fill="currentColor"/>
+                                </svg> -->
+                                <h1>在线图像压缩</h1>
+                                <div class="miaoshu">
+                                    <h2>将图片压缩到你满意为止<h2>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 上传区域 -->
+                        <div class="upload-area" id="dropZone">
+                            <svg class="upload-icon" viewBox="0 0 24 24">
+                                <path d="M12 4L12 16M12 4L8 8M12 4L16 8M4 13V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V13" 
+                                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            </svg>
+                            <p>拖拽图片到这里或点击上传（最多10张）</p>
+                            <input type="file" id="fileInput" accept="image/png,image/jpeg,image/svg+xml" multiple hidden>
+                        </div>
+
+                        <!-- 图片列表区域 -->
+                        <div class="image-lists" id="imageListsContainer" style="display: none;">
+                            <div class="image-list">
+                                <h3>压缩前</h3>
+                                <div class="list-content" id="originalList"></div>
+                            </div>
+
+                            <div class="image-list" id="compressedListContainer" style="display: none;">
+                                <h3>压缩后</h3>
+                                <div class="list-content" id="compressedList"></div>
+                            </div>
+                        </div>
+
+                        <!-- 批量压缩按钮 -->
+                        <button id="batchCompressBtn" class="batch-compress-btn" style="display: none;">
+                            批量压缩
+                        </button>
+
+                        <!-- 压缩控制区域 -->
+                        <div class="compress-controls" id="compressControls" style="display: none;">
+                            <div class="quality-control">
+                                <label for="quality">压缩质量：</label>
+                                <input type="range" id="quality" min="0" max="100" value="80">
+                                <span id="qualityValue">80%</span>
+                            </div>
+                            <button id="downloadBtn" class="download-btn">下载压缩后的图片</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
