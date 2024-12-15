@@ -86,13 +86,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalList = document.getElementById('originalList');
         originalList.innerHTML = '';
 
-        originalFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const item = createImageListItem(file, file.size, e.target.result);
-                originalList.appendChild(item);
-            };
-            reader.readAsDataURL(file);
+        // 使用 Promise.all 确保按顺序加载
+        const loadPromises = originalFiles.map((file, index) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const item = createImageListItem(file, file.size, e.target.result);
+                    item.dataset.index = index;  // 添加索引标记
+                    resolve(item);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(loadPromises).then(items => {
+            items.forEach(item => originalList.appendChild(item));
         });
     }
 
@@ -109,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="image-info">
                 <div class="image-name">${file.name}</div>
                 <div class="image-meta">
-                    <span>${format}</span>
                     <span>${formatFileSize(size)}</span>
                 </div>
             </div>
@@ -134,15 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
         compressedList.innerHTML = '';
 
         try {
-            for (const file of originalFiles) {
+            // 按顺序处理每个文件
+            for (let i = 0; i < originalFiles.length; i++) {
+                const file = originalFiles[i];
                 const compressedFile = await compressImage(file, quality);
                 compressedFiles.push(compressedFile);
                 
-                // 创建预览URL
                 const previewUrl = URL.createObjectURL(compressedFile);
-                
-                // 显示压缩后的图片
                 const item = createImageListItem(file, compressedFile.size, previewUrl);
+                item.dataset.index = i;  // 添加索引标记
                 compressedList.appendChild(item);
             }
         } catch (error) {
@@ -177,11 +184,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     let targetWidth = width;
                     let targetHeight = height;
 
-                    // 根据图片类型和质量值调整压缩策略
+                    // 只有在质量为1(100%)时才返回原始文件
+                    if (quality === 1) {
+                        resolve(file);
+                        return;
+                    }
+
+                    // 调整压缩策略，确保0-99%都进行压缩
                     if (file.type === 'image/png') {
-                        // PNG格式：结合尺寸缩放和质量压缩
+                        // PNG格式：调整缩放范围
                         const minScale = 0.3;  // 最小缩放比例30%
-                        const maxScale = 0.95; // 最大缩放比例95%
+                        const maxScale = 0.9;  // 最大缩放比例90%，降低以确保不会超过原始大小
                         const scale = minScale + (quality * (maxScale - minScale));
                         
                         targetWidth = Math.round(width * scale);
@@ -190,25 +203,30 @@ document.addEventListener('DOMContentLoaded', () => {
                         canvas.width = targetWidth;
                         canvas.height = targetHeight;
                         
-                        // 使用高质量缩放
                         ctx.imageSmoothingEnabled = true;
                         ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
                         
-                        // PNG格式不使用quality参数，只用尺寸缩放来控制大小
                         canvas.toBlob(
                             (blob) => {
                                 if (blob) {
-                                    resolve(blob);
+                                    // 如果压缩后大小超过原始大小，进行额外压缩
+                                    if (blob.size >= file.size) {
+                                        // 递归调用，使用较低的质量值
+                                        const lowerQuality = quality * 0.9;
+                                        compressImage(file, lowerQuality).then(resolve).catch(reject);
+                                    } else {
+                                        resolve(blob);
+                                    }
                                 } else {
                                     reject(new Error('压缩失败'));
                                 }
                             },
-                            'image/png'  // 移除quality参数
+                            'image/png'
                         );
                     } else if (file.type === 'image/jpeg') {
-                        // JPEG格式：结合尺寸和质量压缩
-                        const scale = 0.8 + (quality * 0.2); // 尺寸范围：80%-100%
+                        // JPEG格式：调整缩放范围
+                        const scale = 0.7 + (quality * 0.2); // 调整尺寸范围：70%-90%
                         targetWidth = Math.round(width * scale);
                         targetHeight = Math.round(height * scale);
                         
@@ -220,13 +238,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         canvas.toBlob(
                             (blob) => {
                                 if (blob) {
-                                    resolve(blob);
+                                    // 如果压缩后大小超过原始大小，进行额外压缩
+                                    if (blob.size >= file.size) {
+                                        // 递归调用，使用较低的质量值
+                                        const lowerQuality = quality * 0.9;
+                                        compressImage(file, lowerQuality).then(resolve).catch(reject);
+                                    } else {
+                                        resolve(blob);
+                                    }
                                 } else {
                                     reject(new Error('压缩失败'));
                                 }
                             },
                             'image/jpeg',
-                            quality  // JPEG使用质量参数
+                            quality * 0.95  // 稍微降低JPEG的质量以确保压缩效果
                         );
                     } else if (file.type === 'image/svg+xml') {
                         // SVG格式：文本压缩
@@ -272,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
             zip.file(`compressed_${originalFiles[index].name}`, file);
         });
 
-        // 下载zip文件
+        // ��载zip文件
         zip.generateAsync({type: 'blob'}).then(content => {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(content);

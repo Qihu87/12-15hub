@@ -117,14 +117,28 @@ h1 {
 
 /* 图片信息样式 */
 .image-info {
+    flex: 1;
     display: flex;
-    align-items: center;
     gap: 8px;
-    margin-top: 0px;
-    margin-bottom: 0;
-    color: #666;
-    font-size: 14px;
-    order: 2;
+}
+
+.image-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* 图片格式和大小信息的样式 */
+.image-meta {
+    font-size: 12px;
+    color: #c6c6c6;
+    display: flex;
+    gap: 8px;
+}
+
+/* 特别指定格式和大小信息的样式 */
+.image-meta span {  /* 所有的格式和大小信息都在span标签中 */
+    font-size: 12px;
 }
 
 /* 文件信息样式 */
@@ -467,7 +481,7 @@ input[type="range"]::-webkit-slider-thumb {
     color: currentColor;
 }
 
-/* 主内容区域样式 */
+/* 主内容区样式 */
 .main-content {
     flex-grow: 1;
     min-width: 0;
@@ -594,7 +608,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* 图片列表容器样式 */
 .image-lists-container {
-    display: flex;           /* 使用flex布局，使得子项并排显示 */
+    display: flex;           /* 用flex布局，使得子项并排显示 */
     gap: 24px;               /* 设置子项之间的间距 */
     width: 100%;             /* 占满容器宽度 */
     flex-wrap: nowrap;       /* 禁止换行，确保所有元素在一行内 */
@@ -683,6 +697,12 @@ input[type="range"]::-webkit-slider-thumb {
     color: #c6c6c6;
     display: flex;
     gap: 8px;
+}
+
+/* 如果需要特别指定格式和大小信息的样式 */
+.image-meta .format,
+.image-meta .size {
+    font-size: 12px;  /* 确保格式和大小信息为12px */
 }
 
 /* 压缩控制区域样式 */
